@@ -40,7 +40,7 @@ Place your **CSV file** (e.g., `data.csv`) in the root directory.
 
 Run the following command to **embed the data and create a FAISS index**:
    ```bash
-   python embed_data.py
+   python ingest.py
    ```
 
 ## 🏃 Running the Chatbot
