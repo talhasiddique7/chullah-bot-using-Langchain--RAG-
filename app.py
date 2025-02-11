@@ -27,7 +27,7 @@ qa_chain = RetrievalQA.from_chain_type(
 
 # Streamlit UI
 st.title("Chullah RAG Chatbot")
-st.write("Ask me anything about Chullah!")
+st.write("Ask me anything about Chullah!!")
 
 query = st.text_input("Enter your query:")
 
