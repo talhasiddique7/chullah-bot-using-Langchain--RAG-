@@ -7,3 +7,5 @@ faiss-cpu
 sentence-transformers
 chainlit
 ctransformers
+torch --index-url https://download.pytorch.org/whl/cpu
+
