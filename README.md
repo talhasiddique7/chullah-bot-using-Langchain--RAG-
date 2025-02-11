@@ -50,6 +50,42 @@ Start the chatbot with:
    streamlit run app.py
    ```
 
+## ⚡ Performance Optimization Notes  
+
+For **faster responses** (within 3 seconds), consider the following:  
+
+1. **Use a smaller model**:  
+   - Instead of large models like `Mistral-7B`, use **TinyLlama-1.1B** or `GPT-2` variations.  
+   - Recommended model:  
+     ```python
+     model="TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF"
+     model_type="llama"
+     ```
+   
+2. **Reduce max tokens**:  
+   - Set `max_new_tokens=50` or lower to minimize generation time.  
+
+3. **Adjust temperature and top-p**:  
+   - Use `temperature=0.3` for deterministic outputs.  
+   - Set `top_p=0.9` to prioritize high-probability responses.  
+
+4. **Use a faster embedding model**:  
+   - Instead of `all-MiniLM-L12-v2`, use **`all-MiniLM-L6-v2`** for better speed.  
+
+5. **Limit retrieval results**:  
+   - Adjust FAISS retriever parameters:  
+     ```python
+     retriever = db.as_retriever(search_type="mmr", search_kwargs={'k': 2, 'fetch_k': 5})
+     ```
+   - This reduces the number of retrieved documents, speeding up processing.  
+
+6. **Optimize local execution**:  
+   - Run on a machine with **at least 8GB RAM** for smooth performance.  
+   - Use **GPU acceleration** if available (via `llama-cpp-python` or `CTransformers`).  
+
+By applying these optimizations, your **Chullah RAG chatbot** will respond in under **3 seconds**. 🚀  
+
+
 ## 📌 Example Queries
 - *"How do I place an order?"*
 - *"What payment methods are accepted?"*
