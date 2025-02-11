@@ -1,7 +1,3 @@
-Here's a `README.md` file for your GitHub repository, including installation steps, usage, and your name for credit.  
-
-### **`README.md`**
-```md
 # Chullah RAG Chatbot
 
 A lightweight **Retrieval-Augmented Generation (RAG) chatbot** built using **LangChain**, **FAISS**, and **Llama 2** to answer queries based on a CSV knowledge base. Designed for **efficient local use within 8GB RAM**.
@@ -72,20 +68,4 @@ Start the chatbot with:
 ---
 
 💬 *Feel free to contribute and improve this project!*
-```
 
----
-
-### **📌 Next Steps**
-- Save this as `README.md` in your GitHub repo.
-- Create a `requirements.txt` file:
-  ```txt
-  streamlit
-  langchain
-  faiss-cpu
-  sentence-transformers
-  pandas
-  ```
-- Push your repo to GitHub.
-
-Let me know if you want any modifications! 🚀
