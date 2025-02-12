@@ -30,7 +30,7 @@ def load_faiss():
     try:
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L12-v2")
         db = FAISS.load_local("vectorstore/db_faiss", embeddings, allow_dangerous_deserialization=True)
-        retriever = db.as_retriever(search_type="similarity", search_kwargs={'k': 3, 'fetch_k': 5})
+        retriever = db.as_retriever(search_type="similarity", search_kwargs={'k': 2, 'fetch_k': 5})
         st.success("✅ Database loaded successfully!")
         return retriever
     except Exception as e:
@@ -45,7 +45,7 @@ def load_llm():
         llm = CTransformers(
             model="TheBloke/Mistral-7B-Instruct-v0.1-GGUF",  # Adjust if needed
             model_type="mistral",
-            max_new_tokens=100,
+            max_new_tokens=80,
             temperature=0.3,
             verbose=False
             
