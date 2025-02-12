@@ -12,10 +12,16 @@ st.write("Ask me anything about Chullah!")
 # Define Prompt Template
 custom_prompt = PromptTemplate(
     input_variables=["query"],
-    template="You are an AI assistant for Chullah. Answer the following query in a clear and concise way. "
-             "If the query is irrelevant not related to chullah, simply say: 'I can only answer questions related to Chullah.'\n\n"
-             "Question: {query}\nAnswer:"
+    template="You are an AI assistant for Chullah. "
+             "Respond in a clear and **direct** sentence format, avoiding Q: and A: structures. "
+             "If the question is unrelated to Chullah, simply say: "
+             "'I can only answer questions related to Chullah.' \n\n"
+             "{query}"
+            
 )
+
+
+
 
 @st.cache_resource
 def load_faiss():
@@ -24,7 +30,7 @@ def load_faiss():
     try:
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L12-v2")
         db = FAISS.load_local("vectorstore/db_faiss", embeddings, allow_dangerous_deserialization=True)
-        retriever = db.as_retriever(search_type="mmr", search_kwargs={'k': 5, 'fetch_k': 10})
+        retriever = db.as_retriever(search_type="similarity", search_kwargs={'k': 3, 'fetch_k': 5})
         st.success("✅ Database loaded successfully!")
         return retriever
     except Exception as e:
@@ -37,10 +43,11 @@ def load_llm():
     st.write("🔄 Loading Language Model...")
     try:
         llm = CTransformers(
-            model="TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF",  # Adjust if needed
-            model_type="llama",
+            model="TheBloke/Mistral-7B-Instruct-v0.1-GGUF",  # Adjust if needed
+            model_type="mistral",
             max_new_tokens=100,
             temperature=0.3,
+            verbose=False
             
         )
         st.success("✅ LLM loaded successfully!")
@@ -55,7 +62,7 @@ llm = load_llm()
 if retriever and llm:
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
-        chain_type="stuff",
+        chain_type="stuff", 
         retriever=retriever,
         return_source_documents=True
     )
@@ -75,7 +82,10 @@ if retriever and llm:
                         st.warning("⚠️ I can only answer questions related to Chullah.")
                     else:
                         st.subheader("**Answer:**")
-                        st.write(response["result"])
+                        response_text = response["result"]
+                        response_text = response_text.replace("Q:", "").replace("A:", "").strip()
+                        st.write(response_text)
+
 
                         # Display sources
                         sources = response.get("source_documents", [])
