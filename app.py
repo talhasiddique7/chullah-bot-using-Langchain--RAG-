@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.llms import CTransformers
@@ -17,11 +18,7 @@ custom_prompt = PromptTemplate(
              "If the question is unrelated to Chullah, simply say: "
              "'I can only answer questions related to Chullah.' \n\n"
              "{query}"
-            
 )
-
-
-
 
 @st.cache_resource
 def load_faiss():
@@ -48,7 +45,6 @@ def load_llm():
             max_new_tokens=80,
             temperature=0.3,
             verbose=False
-            
         )
         st.success("✅ LLM loaded successfully!")
         return llm
@@ -73,19 +69,25 @@ if retriever and llm:
         if query.strip():
             with st.spinner("⏳ Thinking..."):
                 try:
+                    start_time = time.time()  # Start timing
+                    
                     # Apply prompt template
                     formatted_query = custom_prompt.format(query=query)
                     response = qa_chain.invoke({"query": formatted_query})
+                    
+                    end_time = time.time()  # End timing
+                    response_time = round(end_time - start_time, 2)  # Calculate response time
 
                     # Check for irrelevant responses
                     if "I don't know" in response["result"] or response["result"].strip() == "":
                         st.warning("⚠️ I can only answer questions related to Chullah.")
                     else:
                         st.subheader("**Answer:**")
-                        response_text = response["result"]
-                        response_text = response_text.replace("Q:", "").replace("A:", "").strip()
+                        response_text = response["result"].replace("Q:", "").replace("A:", "").strip()
                         st.write(response_text)
-
+                        
+                        # Display response time
+                        st.write(f"⏱ Response Time: {response_time} seconds")
 
                         # Display sources
                         sources = response.get("source_documents", [])
