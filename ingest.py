@@ -16,7 +16,7 @@ def clean_csv_data(csv_path):
     return df
 
 # Load and clean CSV data
-csv_path = "Chullah_Chatbot_Data.csv"
+csv_path = "data/Chullah_Chatbot_Data.csv"
 df = clean_csv_data(csv_path)
 
 # Load data into LangChain
