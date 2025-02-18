@@ -99,7 +99,7 @@ By applying these optimizations, your **Chullah RAG chatbot** will respond in un
 - **Streamlit** for an interactive UI.
 
 ## 👤 Author
-**Talha Sidduqe**
+**Talha Siddique**
 
 ---
 
